@@ -20,7 +20,7 @@ use App\Http\Controllers\API\TodoController;
 Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('user/profile', [ProfileController::class, 'getProfile']);
     Route::post('user/profile', [ProfileController::class, 'updateProfile']);
@@ -31,3 +31,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('todos/{id}', [TodoController::class, 'update']);
     Route::delete('todos/{id}', [TodoController::class, 'destroy']);
 });
+
