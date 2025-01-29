@@ -14,25 +14,35 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
 
   Future<void> login() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Email dan password harus diisi!')),
+      );
+      return;
+    }
+
     setState(() {
       isLoading = true;
     });
 
     try {
-      String? token = await AuthService().login(
-        emailController.text,
-        passwordController.text,
-      );
+      String? token = await AuthService().login(email, password);
 
       if (token != null) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen(token: token)),
         );
+      } else {
+        throw Exception("Token tidak valid");
       }
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Login failed')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login gagal: ${e.toString()}')),
+      );
     } finally {
       setState(() {
         isLoading = false;
@@ -71,6 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextField(
                     controller: emailController,
                     style: TextStyle(color: Colors.white),
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: 'Email',
                       labelStyle: TextStyle(color: Colors.white70),
