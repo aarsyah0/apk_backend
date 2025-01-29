@@ -154,7 +154,7 @@ DELETE /api/todos/{id}
 
 ## 🔐 Credential untuk Testing
 **Akun Pengguna**:
-- **Email**: `testuser@example.com`
+- **Email**: `admin@admin.com`
 - **Password**: `password123`
 
 ---
